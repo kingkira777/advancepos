@@ -1,0 +1,58 @@
+extends ../../layout
+
+
+block content  
+
+    .card
+        .card-header.header-elements-inline
+            h4.card-title Add/Update Product
+            
+            .header-element 
+                a.btn.btn-danger.text-white(href="/products" style="cursor:pointer;")
+                    i.fa.fa-times 
+                    |   CANCEL
+
+        .card-body
+            form(action="/products/save-update/"+ no , method="post")
+                .row 
+                    .col-md-2
+                        image(src='/assets/images/Me.png', alt="qrcode" style="width: 100px; height:100px;")
+                    .col-md-10
+                        .row 
+                            .col-md-8   
+                                label(for="name") Name 
+                                input(type="text" name="name" value=(!pinfo)? "" : pinfo.name  ).form-control
+                            .col-md-4   
+                                label(for="category") Category 
+                                select(name="category").form-control
+                                    option(value=(!pinfo)? "" : pinfo.category  )=(!pinfo)? "" : pinfo.category  
+                                    each cat in category
+                                        option(value=cat.name)=cat.name
+
+                        .row 
+                            .col-md-4
+                                label(for="price") Price 
+                                input(type="number" step=".01" name="price" value=(!pinfo)? "" : pinfo.price  ).form-control
+                            .col-md-4
+                                label(for="quantity") Quantity 
+                                input(type="number" name="quantity" value=(!pinfo)? "" : pinfo.quantity  ).form-control
+                            .col-md-4
+                                label(for="status") Status 
+                                select(name="status").form-control
+                                    option( value=(!pinfo)? "" : pinfo.status  )= value=(!pinfo)? "Select-->" : pinfo.status 
+                                    option(value="available") Available
+                                    option(value="notavailable") Not Available
+
+                .row 
+                    .col-md-12 
+                        label(for="description") Description 
+                        textarea.form-control(name="description", rows="10")= value=(!pinfo)? "" : pinfo.description  
+                br 
+                .text-right
+                    button.btn.btn-primary(type='submit')
+                        i.fa.fa-save
+                        |   SAVE 
+
+                .clearfix
+
+            

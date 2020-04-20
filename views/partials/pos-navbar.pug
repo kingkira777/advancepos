@@ -1,0 +1,41 @@
+.navbar.navbar-expand-md.navbar-dark
+    .navbar-brand
+        a.d-inline-block(href='/')
+            img(src='/global_assets/images/logo_light.png', alt='')
+    .d-md-none
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbar-mobile')
+            i.icon-tree5
+        button.navbar-toggler.sidebar-mobile-main-toggle(type='button')
+            i.icon-paragraph-justify3
+    #navbar-mobile.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item
+                a.navbar-nav-link(href='#')
+                    | Text link
+            li.nav-item.dropdown
+                a.navbar-nav-link(href='#')
+                    i.icon-bell2
+                    span.d-md-none.ml-2 Notifications
+                    span.badge.badge-mark.border-white.ml-auto.ml-md-0
+            li.nav-item.dropdown.dropdown-user
+                a.navbar-nav-link.d-flex.align-items-center.dropdown-toggle(href='#', data-toggle='dropdown')
+                    img.rounded-circle.mr-2(src='/global_assets/images/image.png', height='34', alt='')
+                    span Victoria
+                .dropdown-menu.dropdown-menu-right
+                    a.dropdown-item(href='#')
+                        i.icon-user-plus
+                        |  My profile
+                    a.dropdown-item(href='#')
+                        i.icon-coins
+                        |  My balance
+                    a.dropdown-item(href='#')
+                        i.icon-comment-discussion
+                        |  Messages 
+                        span.badge.badge-pill.bg-blue.ml-auto 58
+                    .dropdown-divider
+                    a.dropdown-item(href='#')
+                        i.icon-cog5
+                        |  Account settings
+                    a.dropdown-item(href='#')
+                        i.icon-switch2
+                        |  Logout

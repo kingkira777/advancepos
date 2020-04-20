@@ -1,0 +1,62 @@
+.sidebar.sidebar-dark.sidebar-main.sidebar-expand-md
+    // Sidebar mobile toggler
+    .sidebar-mobile-toggler.text-center
+        a.sidebar-mobile-main-toggle(href='#')
+            i.icon-arrow-left8
+        | 					Navigation
+        a.sidebar-mobile-expand(href='#')
+            i.icon-screen-full
+            i.icon-screen-normal
+    // /sidebar mobile toggler
+    // Sidebar content
+    .sidebar-content
+        // User menu
+        .sidebar-user
+            .card-body
+                .media
+                    .mr-3
+                        a(href='#')
+                            img.rounded-circle(src='/global_assets/images/image.png', width='38', height='38', alt='')
+                    .media-body
+                        .media-title.font-weight-semibold King
+                        .font-size-xs.opacity-50
+                            i.icon-pin.font-size-sm
+                            |   N/A
+                    .ml-3.align-self-center
+                        a.text-white(href='#')
+                            i.icon-cog3
+        // /user menu
+        // Main navigation
+        .card.card-sidebar-mobile
+            ul.nav.nav-sidebar(data-nav-type='accordion')
+                // Main
+                li.nav-item-header
+                    .text-uppercase.font-size-xs.line-height-xs Main
+                    i.icon-menu(title='Main')
+                li.nav-item
+                    a.nav-link(href='/')
+                        i.icon-home4
+                        span Dashboard
+                li.nav-item
+                    a.nav-link(href='/pos')
+                        i.fa.fa-desktop
+                        span POS
+                li.nav-item
+                    a.nav-link(href='/products')
+                        i.fa.fa-project-diagram
+                        span Product
+                li.nav-item
+                    a.nav-link(href='../full/changelog.html')
+                        i.fa.fa-file-invoice-dollar
+                        span Sales
+                        span.badge.bg-blue-400.align-self-center.ml-auto 2.2
+                li.nav-item.nav-item-submenu
+                    a.nav-link(href='#')
+                        i.icon-stack
+                        span References
+                    ul.nav.nav-group-sub(data-submenu-title='Starter kit')
+                        li.nav-item
+                            a.nav-link(href='/references/category') Category
+                // /main
+                // /main navigation
+                // /sidebar content

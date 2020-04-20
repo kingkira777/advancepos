@@ -1,0 +1,52 @@
+extends ../auth-layout
+
+
+block content
+    .content-wrapper
+        // Content area
+        .content.d-flex.justify-content-center.align-items-center
+            // Registration form
+            form.login-form#sign-up(action='/auth/save-new-user', method="post")
+                .card.mb-0
+                    .card-body
+                        .text-center.mb-3
+                            i.icon-plus3.icon-2x.text-success.border-success.border-3.rounded-round.p-3.mb-3.mt-1
+                            h5.mb-0 Create account
+                            span.d-block.text-muted All fields are required
+                        .form-group.text-center.text-muted.content-divider
+                            span.px-2 Your credentials
+                        .form-group.form-group-feedback.form-group-feedback-left
+                            input.form-control(type='text', placeholder='Username' name="username")
+                            .form-control-feedback
+                                i.icon-user-check.text-muted
+                            //- span.form-text.text-danger
+                            //-     i.icon-cancel-circle2.mr-2
+                            //-     |  This username is already taken
+                        .form-group.form-group-feedback.form-group-feedback-left
+                            input.form-control(type='password', placeholder='Password' name="password")
+                            .form-control-feedback
+                                i.icon-user-lock.text-muted
+                        .form-group.form-group-feedback.form-group-feedback-left
+                            input.form-control(type='password', placeholder='Repeat Password' name="repassword")
+                            .form-control-feedback
+                                i.icon-user-lock.text-muted
+                        .form-group.text-center.text-muted.content-divider
+                            span.px-2 Your contacts
+                        .form-group.form-group-feedback.form-group-feedback-left
+                            input.form-control(type='email', placeholder='Your email' name="email")
+                            .form-control-feedback
+                                i.icon-mention.text-muted
+                        .form-group.form-group-feedback.form-group-feedback-left
+                            input.form-control(type='email', placeholder='Repeat email' name="reeamil")
+                            .form-control-feedback
+                                i.icon-mention.text-muted
+                 
+
+                        button.btn.bg-teal-400.btn-block(type='submit')
+                            | Register 
+                            i.icon-circle-right2.ml-2
+            // /registration form
+            // /content area
+            // Footer
+        include footer
+            // /footer

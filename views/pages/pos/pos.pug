@@ -1,0 +1,121 @@
+extends ../../pos_layout
+
+
+block content 
+
+    .row 
+        .col-md-7
+            .card 
+                .card-header.header-elements-inline 
+                    .header-elements
+                        form(action='#')
+                            .wmin-sm-200
+                                .multiselect-native-select
+                                    select#category.form-control.form-control-multiselect(data-fouc='')
+                                        option(value='') Category-->
+                                        each cats in category 
+                                            option(value=cats.name)= cats.name
+                .card-body(style="height:400px; overflow-y:scroll")
+                    .row#product-list 
+                        each product in products
+                            .col-sm-6.col-xl-3
+                                .card.border-1
+                                    .card-img-actions.mx-1.mt-1
+                                        img.card-img.img-fluid(src=(product.cover_image != '')? product.cover_image : '/assets/images/Me.png', alt='')
+                                        .card-img-actions-overlay.card-img
+                                            //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round(href=src=product.cover_image, data-popup='lightbox', rel='group')
+                                            //-     i.icon-plus3
+                                            //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round.ml-2(href='#')
+                                            //-     i.icon-link
+                                    .card-body
+                                        .d-flex.align-items-start.flex-nowrap
+                                            div
+                                                .font-weight-semibold.mr-2=product.name
+                                                span.font-size-sm.text-muted='P'+product.price
+                                            .list-icons.list-icons-extended.ml-auto
+                                                a.list-icons-item.add-item(data-no=product.no, onclick="_add_item_to_cart('"+product.no+"');")
+                                                    i.fa.fa-plus
+
+                .card-footer
+
+
+
+
+        .col-md-5
+
+            .card 
+                .card-body
+                    div(style="height:300px; overflow:scroll")
+                        .table-responsive
+                            table.table
+                                thead
+                                    tr    
+                                        th(width="200px") Name 
+                                        th Price 
+                                        th Quantity 
+                                        th(width="108px") Total Price 
+                                        th
+                                tbody#item-list
+                    .row 
+                        .col-md-6 
+
+                        .col-md-6
+                            table(style="width:100%")
+                                tr
+                                    td Sub Total 
+                                    td(align="right")
+                                        |   P
+                                        |   
+                                        input#subtotal(type="number" step=".01" disabled style="width:80px;")
+                                tr
+                                    td Discount (%) 
+                                    td(align="right")
+                                        |   P
+                                        |   
+                                        input#discount(type="number" step=".01" style="width:80px;")
+                                tr
+                                    td NetPayable 
+                                    td(align="right")
+                                        |   P
+                                        |   
+                                        input#payable(type="number" step=".01" disabled style="width:80px;")
+                                tr
+                                    td Money 
+                                    td(align="right")
+                                        |   P
+                                        |   
+                                        input#money(type="number" step=".01" style="width:80px;")
+                                tr
+                                    td Change
+                                    td(align="right")
+                                        |   P
+                                        |   
+                                        input#change(type="number" step=".01" disabled style="width:80px;")
+
+                .card-footer
+                    
+                    ul.nav.nav-pills.nav-pills-bordered.nav-pills-toolbar.nav-justified
+                        li.nav-item
+                            a.nav-link.rounded-left-round#new-order(href='#', data-toggle='tab') 
+                                i.fa.fa-plus
+                                |   New Order
+                        li.nav-item
+                            a.nav-link(href='#', data-toggle='tab')
+                                i.fa.fa-utensils
+                                |   To Kitchen
+                        li.nav-item
+                            a.nav-link#payment(href='#', data-toggle='tab')
+                                i.fa.fa-file-invoice-dollar
+                                |   Payment
+                        li.nav-item
+                            a.nav-link.rounded-right-round#cancel-cart-items(href='#', data-toggle='tab') 
+                                i.fa.fa-recycle
+                                |   Cancel
+                    .row 
+                        .col-md-6
+                            p ID: 
+                                span#cartno
+                        .col-md-6
+                            p="Date: "+ moment().format('MMMM Do YYYY, h:mm:ss a')
+                                
+

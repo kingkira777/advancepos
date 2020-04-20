@@ -1,0 +1,49 @@
+extends ../../layout
+
+
+block content  
+
+    .card
+        .card-header.header-elements-inline
+            h4.card-title Category
+        
+        .card-body
+            .row 
+                .col-md-8
+                    .card.border-1.border-black
+                        .card-header 
+                            h5.card-title Category List
+                        .card-body 
+                            .table-responsive 
+                                table.table 
+                                    thead
+                                        tr
+                                            th Catergory Name
+                                    tbody
+                                        each cat in category
+                                            tr 
+                                                td=cat.name
+                                                td(align="right") 
+                                                    a.list-icons-item.text-danger-600(href='/references/category/delete?id='+cat.id)
+                                                        i.icon-trash
+                                                        |       DELETE
+
+            
+                .col-md-4
+                    .card.border-1.border-black
+                        .card-header 
+                            h5.card-title Add New Category
+                        .card-body 
+                            if(err)
+                                .alert.alert-warning.alert-dismissible
+                                    button.close(type='button', data-dismiss='alert')
+                                        span ×
+                                    |   Category Name is Already Exist!
+
+                            form(action="/references/category/save", method="post")
+                                .input-group
+                                    input.form-control(type='text', name="category", placeholder='Category Name...')
+                                    span.input-group-append
+                                        button.btn.btn-light(type='submit') 
+                                            i.fa.fa-save 
+                                            |   Save

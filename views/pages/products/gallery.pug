@@ -1,0 +1,39 @@
+extends ../../layout    
+
+
+block content
+
+    form(action="/products/gallery/"+no+"/upload", method="post", encType="multipart/form-data" )
+        .input-group
+            input(type="file", name="imageFile").form-control
+            span.input-group-append
+                button.btn.btn-light(type='submit') UPLOAD
+
+        
+
+
+
+    hr 
+
+    .row
+        each image in images
+            .col-sm-6.col-xl-3
+                .card.border-1(class=(image.iscover == "true")? 'border-green' : 'border-red')
+                    .card-img-actions.mx-1.mt-1
+                        img.card-img.img-fluid(src=image.path+"/"+image.name, alt='')
+                        .card-img-actions-overlay.card-img
+                            a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round(href=image.path+"/"+image.name, data-popup='lightbox', rel='group')
+                                i.icon-plus3
+                            //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round.ml-2(href='#')
+                            //-     i.icon-link
+                    .card-body
+                        .d-flex.align-items-start.flex-nowrap
+                            div
+                                .font-weight-semibold.mr-2= image.name
+                                span.font-size-sm.text-muted="Size: "+image.size+" kb"
+                            .list-icons.list-icons-extended.ml-auto
+                                a.list-icons-item(href='/products/gallery/'+image.product_no+'/cover-image?id='+image.id)
+                                    i.fa.fa-image.top-0
+                                a.list-icons-item(href='/products/gallery/'+image.product_no+'/delete?id='+image.id)
+                                    i.fa.fa-trash.top-0
+    

@@ -1,0 +1,54 @@
+extends ../../pos_layout 
+
+
+block content 
+
+    h4(align="center") STORE NAME
+    table(style="width:100%", cellpadding="4") 
+        tr 
+            td 
+            td(align="right")
+                p="Date: "+moment().format('m/d/Y')
+        tr  
+            td(colspan="2")
+                P Address
+    hr
+
+    table.table
+        thead
+            tr  
+                th Name 
+                th Price 
+                th Quantity 
+                th Total Price
+        tbody   
+            each item in cartlist
+                tr   
+                    td=item.name
+                    td='P'+item.price
+                    td=item.quantity
+                    td(align="right")='P'+item.total_price 
+
+        tr(bgcolor="dbd6d7")  
+            td(colspan="3") Sub Total
+            td(align="right")=(cartpaid)? 'P'+cartpaid[0].subtotal : '0'
+        tr(bgcolor="dbd6d7") 
+            td(colspan="3") Discount (%)	
+            td(align="right")=(cartpaid)? '%'+ cartpaid[0].discount : '0'
+        tr(bgcolor="dbd6d7")  
+            td(colspan="3") NetPayable
+            td(align="right")=(cartpaid)? 'P'+cartpaid[0].netpayable : '0'
+        tr(bgcolor="dbd6d7")  
+            td(colspan="3") Money
+            td(align="right")=(cartpaid)? 'P'+cartpaid[0].money : '0'
+        tr(bgcolor="dbd6d7")
+            td(colspan="3") Total Change
+            td(align="right")=(cartpaid)? 'P'+cartpaid[0].change_money : '0'
+
+
+    hr
+    
+    div(align="center")
+        p TEL: 
+        p PHONE:
+        p EMAIL:

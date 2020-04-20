@@ -1,0 +1,21 @@
+.navbar.navbar-expand-md.navbar-dark
+    .navbar-brand
+        a.d-inline-block(href='index.html')
+            img(src='/global_assets/images/logo_light.png', alt='')
+    .d-md-none
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbar-mobile')
+            i.icon-tree5
+    #navbar-mobile.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item.dropdown
+                a.navbar-nav-link(href='#')
+                    i.icon-display4
+                    span.d-md-none.ml-2 Go to website
+            li.nav-item.dropdown
+                a.navbar-nav-link(href='#')
+                    i.icon-user-tie
+                    span.d-md-none.ml-2 Contact admin
+            li.nav-item.dropdown
+                a.navbar-nav-link(href='#')
+                    i.icon-cog3
+                    span.d-md-none.ml-2 Options
