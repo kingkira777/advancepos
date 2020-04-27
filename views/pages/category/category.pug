@@ -15,18 +15,8 @@ block content
                             h5.card-title Category List
                         .card-body 
                             .table-responsive 
-                                table.table 
-                                    thead
-                                        tr
-                                            th Catergory Name
-                                    tbody
-                                        each cat in category
-                                            tr 
-                                                td=cat.name
-                                                td(align="right") 
-                                                    a.list-icons-item.text-danger-600(href='/references/category/delete?id='+cat.id)
-                                                        i.icon-trash
-                                                        |       DELETE
+                                table.table#table-categories(style="width:100%;") 
+       
 
             
                 .col-md-4
@@ -40,10 +30,21 @@ block content
                                         span ×
                                     |   Category Name is Already Exist!
 
-                            form(action="/references/category/save", method="post")
+                            form#category-form(action="/references/category/save", method="post")
                                 .input-group
                                     input.form-control(type='text', name="category", placeholder='Category Name...')
                                     span.input-group-append
                                         button.btn.btn-light(type='submit') 
                                             i.fa.fa-save 
                                             |   Save
+
+
+
+
+
+
+
+
+
+block page-script  
+    script(src="/pos_js/page_ref.js")

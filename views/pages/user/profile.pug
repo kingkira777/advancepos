@@ -1,0 +1,67 @@
+extends ../../layout 
+
+block content
+
+    .row 
+        .col-md-4 
+            .card.border-dark
+                .card-body.text-center
+                    .card-img-actions.d-inline-block.mb-3
+                        img.img-fluid.rounded-circle#prof-image(width='170', height='170', alt='')
+
+                    h6.font-weight-semibold.mb-0=username
+                    form#profileImage-form(action="/user/upload-profile", method="post")
+                        .input-group
+                            input(type="file", name="imageFile").form-control
+                            span.input-group-append
+                                button.btn.btn-light(type='submit') UPLOAD
+
+        .col-md-8
+
+            .card.border-dark
+                .card-header 
+                    h4.card-title Update My Profile
+
+                form#profile-form(action="/user/update-profile", method="post")
+                    .card-body  
+                        .row 
+                            .col-md-4   
+                                label(for="lastname") Lastname
+                                input(type="text" name="lastname" value=(!profile[0])?'' : profile[0].lastname).form-control
+                            .col-md-4   
+                                label(for="firstname") Firstname
+                                input(type="text" name="firstname" value=(!profile[0])? '' : profile[0].firstname).form-control
+                            .col-md-4   
+                                label(for="middlename") MI
+                                input(type="text" name="middlename" value=(!profile[0])? '' :  profile[0].middlename).form-control
+                        .row 
+                            .col-md-6
+                                label(for="gender") Gender
+                                select(name="gender").form-control 
+                                    option( value=(!profile[0])?  '' : profile[0].gender)=(!profile[0])? 'Select-->' : profile[0].gender
+                                    option(value="male") Male 
+                                    option(value="female") Female
+                            .col-md-6
+                                label(for="dob") Date of Birth
+                                input(type="date" name="dob" value=(!profile[0])? '' : profile[0].dob).form-control
+                        .row
+                            .col-md-6
+                                label(for="cellno") Cellphone #
+                                input(type="text" name="cellno" value=(!profile[0])? '' : profile[0].cellphoneno).form-control
+                            .col-md-6
+                                label(for="telno") Telephone #
+                                input(type="text" name="telno" value=(!profile[0])? '' : profile[0].telephoneno).form-control
+                            .col-md-12
+                                label(for="address") Address
+                                input(type="text" name="address" value=(!profile[0])? '' : profile[0].address).form-control
+
+                    .card-footer
+                        .text-right
+                            button.btn.btn-primary(type='submit') Save changes
+
+
+
+
+
+block page-script
+    script(src="/pos_js/page_user.js")

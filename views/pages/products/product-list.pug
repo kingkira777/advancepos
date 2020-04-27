@@ -3,7 +3,7 @@ extends ../../layout
 
 block content  
 
-    .card
+    .card.border-dark
         .card-header.header-elements-inline
             h4.card-title Product List
 
@@ -11,34 +11,19 @@ block content
                 a.btn.btn-primary.text-white(href="/products/add-update" style="cursor:pointer;")
                     i.fa.fa-plus 
                     |   ADD NEW PRODUCT
+                    
 
         .card-body
+            .row 
+                .col-md-9
+                .col-md-3
+                    select#select-cat.form-control 
+                        option(value="") ALL-->
+                        each cat in category
+                            option(value=cat.name)=cat.name
             .table-responsive 
-                table.table 
-                    thead
-                        tr
-                            th Cover
-                            th Name 
-                            th Price 
-                            th Quantity
-                            th Status
-                    tbody  
-                        each product in products
-                            tr 
-                                td(width="5")
-                                    image(src=(product.cover_image != "")? product.cover_image : '/assets/images/Me.png', alt="qrcode" style="width: 70px; height:70px;")
-                                td=product.name
-                                td=product.price 
-                                td=product.quantity 
-                                td=product.status 
-                                td(align="right" width="150")
-                                    a.list-icons-item.text-primary-600(href='/products/gallery/'+product.no)
-                                        i.fa.fa-images
-                                        
-                                    |    &nbsp; &nbsp;
-                                    a.list-icons-item.text-primary-600(href='/products/add-update?no='+product.no)
-                                        i.fa.fa-edit
-                                    |    &nbsp;
-                                    a.list-icons-item.text-danger-600(href='/products/delete-product?no='+product.no)
-                                        i.fa.fa-trash
-                                        
+                table#product-table.table.table-stripted.table-hover(style="width:100%") 
+                   
+
+block page-script   
+    script(src="/pos_js/page_products.js")

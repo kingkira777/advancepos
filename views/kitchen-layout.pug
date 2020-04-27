@@ -1,0 +1,73 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title=title
+    // Global stylesheets
+    link(href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900', rel='stylesheet', type='text/css')
+    link(href='/global_assets/css/icons/icomoon/styles.min.css', rel='stylesheet', type='text/css')
+    link(href='/global_assets/css/icons/fontawesome/styles.min.css', rel='stylesheet', type='text/css')
+    link(href='/assets/css/bootstrap.min.css', rel='stylesheet', type='text/css')
+    link(href='/assets/css/bootstrap_limitless.min.css', rel='stylesheet', type='text/css')
+    link(href='/assets/css/layout.min.css', rel='stylesheet', type='text/css')
+    link(href='/assets/css/components.min.css', rel='stylesheet', type='text/css')
+    link(href='/assets/css/colors.min.css', rel='stylesheet', type='text/css')
+    // /global stylesheets
+    // Core JS files
+    
+  body.navbar-top.layout-boxed-bg( data-spy="scroll" data-target=".sidebar-component-right")
+
+    .d-flex.flex-column.flex-1.layout-boxed
+
+      //- Top Navbar
+      include partials/nav-bar
+
+      .page-content
+        //- include partials/side-bar
+
+        .content-wrapper
+          //- include partials/page-header
+
+
+          .content
+            block content
+
+
+
+
+    script(src='/global_assets/js/main/jquery.min.js')
+    script(src='/global_assets/js/main/bootstrap.bundle.min.js')
+    script(src='/global_assets/js/plugins/loaders/blockui.min.js')
+    script(src="https://unpkg.com/axios/dist/axios.min.js")
+    script(src="http://malsup.github.com/jquery.form.js")
+    script(src="https://momentjs.com/downloads/moment.min.js")
+
+    //- DataTable
+    script(src="/global_assets/js/plugins/tables/datatables/datatables.min.js")
+    script(src='/global_assets/js/plugins/forms/selects/select2.min.js')
+    script(src='/global_assets/js/plugins/tables/datatables/extensions/jszip/jszip.min.js')
+    script(src='/global_assets/js/plugins/tables/datatables/extensions/pdfmake/pdfmake.min.js')
+    script(src='/global_assets/js/plugins/tables/datatables/extensions/pdfmake/vfs_fonts.min.js')
+    script(src='/global_assets/js/plugins/tables/datatables/extensions/buttons.min.js')
+
+
+    //- Sweet Alert
+    script(src="/global_assets/js/plugins/notifications/sweet_alert.min.js")
+
+    //- Chart Js
+    script(src="/global_assets/js/plugins/visualization/d3/d3.min.js")
+    script(src="/global_assets/js/plugins/visualization/c3/c3.min.js")
+
+    //- Scroll
+    script(src="/global_assets/js/plugins/ui/prism.min.js")
+    script(src="/global_assets/js/plugins/ui/sticky.min.js")
+
+    script(src='/assets/js/app.js')
+    script(src='/pos_js/app.js')
+
+    block page-script
+
+      
+

@@ -1,0 +1,68 @@
+extends ../../layout 
+
+block content
+
+    .row    
+        .col-md-6
+
+            .card.border-dark
+                .card-header 
+                    h4.card-title Account Setting
+                .card-body 
+                    form#account-form(action="/user/update-account", method="post")
+                        label(for="username") Username
+                        input(type="text", name="username" value=(account[0])? account[0].username : '').form-control
+                        label(for="email") Email Address
+                        input(type="email", name="email" value=(account[0])? account[0].email : '').form-control
+                        label(for="password") Password
+                        input(type="password", name="password").form-control
+                        br 
+                        .text-right 
+                            button.btn.btn-primary(type='submit') Save changes
+        .col-md-6   
+            .card.border-dark 
+                .card-header 
+                    h4.card-title Change Password 
+                .card-body  
+                    form#changepass-form(action="/user/change-password", method="post")
+                        label(for="oldpass") Current Password
+                        input(type="password", name="password").form-control
+                        label(for="oldpass") New Password
+                        input(type="password", name="newpassword").form-control
+                        label(for="oldpass") Retype New Password
+                        input(type="password", name="repassword").form-control
+                        br 
+                        .text-right 
+                            button.btn.btn-primary(type='submit') Save changes
+
+
+
+        .col-md-12   
+                    
+
+            .card.border-dark 
+                .card-header 
+                    h4.card-title Store Information
+                .card-body 
+                    form#storeinfo-form(action="/user/update-storeinfo", method="post")
+                        .row 
+                            .col-md-12 
+                                label(for="name") Store Name
+                                input(type="text", name="name" value=(storeinfo[0])? storeinfo[0].name : '' ).form-control
+                        .row 
+                            .col-md-6
+                                label(for="email") Email Address
+                                input(type="email" name="email" value=(storeinfo[0])? storeinfo[0].email : '').form-control
+                            .col-md-6
+                                label(for="telephone") Telephone Number
+                                input(type="text", name="telephone" value=(storeinfo[0])? storeinfo[0].telephoneno : '').form-control
+                        .row 
+                            .col-md-12 
+                                label(for="address") Address
+                                input(type="text", name="address" value=(storeinfo[0])? storeinfo[0].address : '').form-control
+                        br 
+                        .text-right 
+                            button.btn.btn-primary(type='submit') Save changes
+            
+block page-script
+    script(src="/pos_js/page_user.js")

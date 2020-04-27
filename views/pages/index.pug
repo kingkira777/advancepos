@@ -1,12 +1,54 @@
 extends ../layout
 
 block content
-  .row
- 
-               
-    .col-lg-4
-        // Today's revenue
-        .card
-            .card-body
-               canvas#daily-sales
-                
+    .card.border-primary
+        .card-body
+            .row
+                .col-sm-3
+                    .d-flex.align-items-center.justify-content-center.mb-2
+                        a.btn.bg-transparent.border-teal.text-teal.rounded-round.border-2.btn-icon.mr-3(href='#')
+                            i.fa.fa-sitemap
+                        div
+                            .font-weight-semibold Total Products
+                            span.text-muted=pravail[0]
+                .col-sm-3
+                    .d-flex.align-items-center.justify-content-center.mb-2
+                        a.btn.bg-transparent.border-success-400.text-success-400.rounded-round.border-2.btn-icon.mr-3(href='#')
+                            i.icon-watch2
+                        div
+                            .font-weight-semibold Available Products
+                            span.text-muted=pravail[1]
+
+                .col-sm-3
+                    .d-flex.align-items-center.justify-content-center.mb-2
+                        a.btn.bg-transparent.border-danger-400.text-danger-400.rounded-round.border-2.btn-icon.mr-3(href='#')
+                            i.fa.fa-sitemap
+                        div
+                            .font-weight-semibold Not Avail. Products
+                            span.text-muted
+                                span.badge.badge-mark.border-success.mr-2
+                                =pravail[2]
+
+
+    .row 
+        .col-md-8            
+            .card.border-success
+                .card-header  
+                    h4.card-title Daily Sales
+                .card-body  
+                    #daily-sales
+        .col-md-4   
+            .card.border-warning
+                .card-header  
+                    h4.card-title Product Stock Tracker
+                .card-body  
+                    table.table.table-striped(style="width:100%")#stock-tracker
+
+
+
+
+
+block page-script 
+    script(src="/pos_js/page_dashboard.js")
+
+

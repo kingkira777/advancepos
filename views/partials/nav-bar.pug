@@ -1,7 +1,7 @@
 .navbar.navbar-expand-md.navbar-dark.fixed-top
     .navbar-brand
         a.d-inline-block(href='/')
-            //- img(src='/global_assets/images/logo_light.png', alt='')
+            img(src='/global_assets/images/apos_ligth.png', alt='')
     .d-md-none
         button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbar-mobile')
             i.icon-tree5
@@ -13,31 +13,24 @@
                 a.navbar-nav-link.sidebar-control.sidebar-main-toggle.d-none.d-md-block(href='#')
                     i.icon-paragraph-justify3
         ul.navbar-nav.ml-auto
-            li.nav-item
-                a.navbar-nav-link(href='#')
-                    | Text link
-            li.nav-item.dropdown
-                a.navbar-nav-link(href='#')
-                    i.icon-bell2
-                    span.d-md-none.ml-2 Notifications
-                    span.badge.badge-mark.border-white.ml-auto.ml-md-0
+            //- li.nav-item
+            //-     a.navbar-nav-link(href='#')
+            //-         | Text link
+            //- li.nav-item.dropdown
+            //-     a.navbar-nav-link(href='#')
+            //-         i.icon-bell2
+            //-         span.d-md-none.ml-2 Notifications
+            //-         span.badge.badge-mark.border-white.ml-auto.ml-md-0
             li.nav-item.dropdown.dropdown-user
                 a.navbar-nav-link.d-flex.align-items-center.dropdown-toggle(href='#', data-toggle='dropdown')
-                    img.rounded-circle.mr-2(src='/global_assets/images/image.png', height='34', alt='')
-                    span King
+                    img.rounded-circle.mr-2(src=image, height='34', alt='')
+                    span=user
                 .dropdown-menu.dropdown-menu-right
-                    a.dropdown-item(href='#')
+                    a.dropdown-item(href='/user/profile')
                         i.icon-user-plus
                         |  My profile
-                    a.dropdown-item(href='#')
-                        i.icon-coins
-                        |  My balance
-                    a.dropdown-item(href='#')
-                        i.icon-comment-discussion
-                        |  Messages 
-                        span.badge.badge-pill.bg-blue.ml-auto 58
                     .dropdown-divider
-                    a.dropdown-item(href='#')
+                    a.dropdown-item(href='/user/settings')
                         i.icon-cog5
                         |  Account settings
                     a.dropdown-item(href='/auth/logout')

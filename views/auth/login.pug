@@ -13,6 +13,12 @@ block content
                             i.icon-reading.icon-2x.text-slate-300.border-slate-300.border-3.rounded-round.p-3.mb-3.mt-1
                             h5.mb-0 Login to your account
                             span.d-block.text-muted Your credentials
+                            if(err)
+                                .alert.alert-warning.alert-dismissible
+                                    a.close(type='button', data-dismiss='alert')
+                                        span ×
+
+                                    span Invalid User or Password! 
                         .form-group.form-group-feedback.form-group-feedback-left
                             input.form-control(type='text', placeholder='Username' name="username")
                             .form-control-feedback

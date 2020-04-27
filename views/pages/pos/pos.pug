@@ -5,45 +5,76 @@ block content
 
     .row 
         .col-md-7
-            .card 
-                .card-header.header-elements-inline 
+
+            //- With TAB dude!
+            .card.border-dark
+                .card-header.bg-light.pb-0.pt-sm-0.header-elements-sm-inline
+                    h6.card-title POINT OF SALE
                     .header-elements
-                        form(action='#')
-                            .wmin-sm-200
-                                .multiselect-native-select
-                                    select#category.form-control.form-control-multiselect(data-fouc='')
-                                        option(value='') Category-->
-                                        each cats in category 
-                                            option(value=cats.name)= cats.name
-                .card-body(style="height:400px; overflow-y:scroll")
-                    .row#product-list 
-                        each product in products
-                            .col-sm-6.col-xl-3
-                                .card.border-1
-                                    .card-img-actions.mx-1.mt-1
-                                        img.card-img.img-fluid(src=(product.cover_image != '')? product.cover_image : '/assets/images/Me.png', alt='')
-                                        .card-img-actions-overlay.card-img
-                                            //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round(href=src=product.cover_image, data-popup='lightbox', rel='group')
-                                            //-     i.icon-plus3
-                                            //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round.ml-2(href='#')
-                                            //-     i.icon-link
-                                    .card-body
-                                        .d-flex.align-items-start.flex-nowrap
-                                            div
-                                                .font-weight-semibold.mr-2=product.name
-                                                span.font-size-sm.text-muted='P'+product.price
-                                            .list-icons.list-icons-extended.ml-auto
-                                                a.list-icons-item.add-item(data-no=product.no, onclick="_add_item_to_cart('"+product.no+"');")
-                                                    i.fa.fa-plus
+                        ul.nav.nav-tabs.nav-tabs-highlight.card-header-tabs
+                            li.nav-item
+                                a.nav-link.active.show(href='#card-tab1', data-toggle='tab')
+                                    i.icon-screen-full.mr-2
+                                    | 												Products
+                            li.nav-item
+                                a.nav-link(href='#card-tab2', data-toggle='tab')
+                                    i.icon-stats-bars.mr-2
+                                    | 												Kitchen
+                            li.nav-item
+                                a.nav-link(href='/')
+                                    i.icon-home.mr-2
+                                    | 												Home
 
-                .card-footer
+                .card-body.tab-content
 
+                    #card-tab1.tab-pane.fade.active.show(style="height:510px; overflow-y:scroll")
+                        .row 
+                            .col-md-4    
+                                select#category.form-control.form-control-sm
+                                    option(value='') Category-->
+                                    each cats in category 
+                                        option(value=cats.name)= cats.name
+                        hr
+                        .row#product-list 
+                            each product in products
+                                .col-sm-6.col-xl-3
+                                    .card.border-1
+                                        .card-img-actions.mx-1.mt-1
+                                            img.card-img.img-fluid(src=(product.cover_image != '')? product.cover_image : '/assets/images/Me.png', alt='')
+                                            .card-img-actions-overlay.card-img
+                                                //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round(href=src=product.cover_image, data-popup='lightbox', rel='group')
+                                                //-     i.icon-plus3
+                                                //- a.btn.btn-outline.bg-white.text-white.border-white.border-2.btn-icon.rounded-round.ml-2(href='#')
+                                                //-     i.icon-link
+                                        .card-body
+                                            .d-flex.align-items-start.flex-nowrap
+                                                div
+                                                    .font-weight-semibold.mr-2=product.name
+                                                    span.font-size-sm.text-muted='Price: '+product.price
+                                                    br 
+                                                    span.font-size-sm.text-muted='Stock: '+product.quantity
+                                                .list-icons.list-icons-extended.ml-auto
+                                                    a.list-icons-item.add-item(data-no=product.no, onclick="_add_item_to_cart('"+product.no+"');")
+                                                        i.fa.fa-plus
+    
+
+
+
+
+
+
+                    #card-tab2.tab-pane.fade
+                        | This is the second card tab content
+                    #card-tab3.tab-pane.fade
+                        | This is the third card tab content
+                    #card-tab4.tab-pane.fade
+                        | This is the fourth card tab content
 
 
 
         .col-md-5
 
-            .card 
+            .card.border-dark
                 .card-body
                     div(style="height:300px; overflow:scroll")
                         .table-responsive
@@ -93,14 +124,14 @@ block content
                                         input#change(type="number" step=".01" disabled style="width:80px;")
 
                 .card-footer
-                    
+
                     ul.nav.nav-pills.nav-pills-bordered.nav-pills-toolbar.nav-justified
                         li.nav-item
                             a.nav-link.rounded-left-round#new-order(href='#', data-toggle='tab') 
                                 i.fa.fa-plus
                                 |   New Order
                         li.nav-item
-                            a.nav-link(href='#', data-toggle='tab')
+                            a.nav-link#to-kitchen(href='#', data-toggle='tab')
                                 i.fa.fa-utensils
                                 |   To Kitchen
                         li.nav-item
@@ -117,5 +148,5 @@ block content
                                 span#cartno
                         .col-md-6
                             p="Date: "+ moment().format('MMMM Do YYYY, h:mm:ss a')
-                                
+
 

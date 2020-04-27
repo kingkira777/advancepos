@@ -6,15 +6,16 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var fileUpload = require('express-fileupload');
 var moment = require('moment');
-var http = require('http');
 
 var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRouter = require('./routes/products');
+var salesRouter = require('./routes/sales');
 var catRouter = require('./routes/references');
 
 var posRouter = require('./routes/pos');
+var kitchenRouter = require('./routes/kitchen');
 
 var app = express();
 var sess = {
@@ -45,10 +46,12 @@ app.use(session(sess));
 app.use('/auth',authRouter);
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/products',productRouter);
+app.use('/sales',salesRouter);
 app.use('/references',catRouter);
 app.use('/pos',posRouter);
+app.use('/kitchen',kitchenRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -9,13 +9,14 @@ var Auth = function(){
         $('#login').submit(function(e){
             var username = e.target[0].value
             var password = e.target[1].value;
-            if(username != ""){
-
-            }else if(password != ""){
-
+            if(username === ""){
+                master._message_box('Username is Empty!','warning');
+            }else if(password === ""){
+                master._message_box('Password is Empty!','warning');
             }else{
                 $(this).submit();
             }
+            e.preventDefault();
         }); 
     };
 
@@ -28,10 +29,13 @@ var Auth = function(){
             var email = e.target[3].value;
             var reeamil = e.target[4].value;
 
-            if(password !== repassword){
-                alert('Password not Mathced!');
+            if(username === "" || password === "" || repassword === "" 
+                || email === "" || reeamil === ""){
+                master._message_box('Some Field(s) is Empty!','warning');
+            }else if(password !== repassword){
+                master._message_box('Password not Mathced!','warning');
             }else if(email !== reeamil){
-                alert('Email not Mathced!');
+                master._message_box('Email not Mathced!','warning');
             }else{
                 $(this).submit();
             }

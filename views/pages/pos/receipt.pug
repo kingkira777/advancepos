@@ -3,7 +3,7 @@ extends ../../pos_layout
 
 block content 
 
-    h4(align="center") STORE NAME
+    h4(align="center")=(storeinfo[0])? storeinfo[0].name : ''
     table(style="width:100%", cellpadding="4") 
         tr 
             td 
@@ -11,7 +11,7 @@ block content
                 p="Date: "+moment().format('m/d/Y')
         tr  
             td(colspan="2")
-                P Address
+                p=(storeinfo[0])?'Address: ' +storeinfo[0].address : ''
     hr
 
     table.table
@@ -49,6 +49,5 @@ block content
     hr
     
     div(align="center")
-        p TEL: 
-        p PHONE:
-        p EMAIL:
+        p=(storeinfo[0])? 'Email: ' +storeinfo[0].email : ''
+        p=(storeinfo[0])? 'Telephone#: ' +storeinfo[0].telephoneno : ''

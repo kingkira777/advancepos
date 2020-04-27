@@ -28,17 +28,23 @@ router.get('/category?',(req,res,next)=>{
     var err = req.query.err;
     res.render('pages/category/category',{
         title : 'Category',
-        category : category_arr,
+        user: req.session.username,
+        image : req.session.image,
         err : err
     });
+    res.end();
+}).get('/table-category',(req,res)=>{
+    if(!req.session.no){
+        res.redirect('/auth/login');
+        res.end();
+    }
+    res.json(category_arr);
     res.end();
 }).post('/category/save',(req,res,next)=>{
     if(!req.session.no){
         res.redirect('/auth/login');
         res.end();
     }
-
-
     var cno = req.session.no;
     var category = req.body.category;
 
@@ -53,28 +59,31 @@ router.get('/category?',(req,res,next)=>{
             ];
             con.query(s,[sVal],(err1,rs1)=>{
                 if(err1) throw err1
-                res.redirect('/references/category');
+                res.json({
+                    message : 'saved'
+                })
                 res.end();
             });
         }else{
-            res.redirect('/references/category?err=1');
+            res.json({
+                message : 'exist'
+            })
             res.end();
         }
     });
-
-
 }).get('/category/delete?',(req,res,next)=>{
     if(!req.session.no){
         res.redirect('/auth/login');
         res.end();
     }
-
     var id = req.query.id;
     var d = `DELETE FROM category WHERE id = ?`;
     var dVal =[id];
     con.query(d,dVal,(err,rs)=>{
         if(err) throw err;
-        res.redirect('/references/category');
+        res.json({
+            message : 'deleted'
+        });
         res.end();
     });
 });

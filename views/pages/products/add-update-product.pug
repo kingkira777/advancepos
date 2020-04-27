@@ -13,10 +13,10 @@ block content
                     |   CANCEL
 
         .card-body
-            form(action="/products/save-update/"+ no , method="post")
+            form#product-form(action="/products/save-update/"+ no , method="post")
                 .row 
                     .col-md-2
-                        image(src='/assets/images/Me.png', alt="qrcode" style="width: 100px; height:100px;")
+                        image(src=qrcode, alt="qrcode" style="width: 100px; height:100px;")
                     .col-md-10
                         .row 
                             .col-md-8   
@@ -56,3 +56,7 @@ block content
                 .clearfix
 
             
+
+block page-script   
+    script(src="/pos_js/page_products.js")
+

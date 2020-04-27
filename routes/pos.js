@@ -8,7 +8,7 @@ var product_arr =[], category_arr =[];
 router.use((req,res,next)=>{
     var cno = req.session.no;
     async function initPost(){
-        product_arr = await master.product_list(cno);
+        product_arr = await master.product_list(cno,'');
         category_arr = await master.category_list(cno);
         next();
     }
@@ -25,8 +25,10 @@ router.get('/',(req,res,next)=>{
 
     res.render('pages/pos/pos',{
         title : 'Point Of Sale',
+        user: req.session.username,
         products : product_arr,
         category : category_arr
+        
     });
     res.end();
 });
@@ -43,6 +45,7 @@ router.get('/cart-receipt?',(req,res)=>{
     var cart_arr =[];
     async function cart_list(){
         cart_arr = await master.cart_list(cartno);
+        storeinfo = await master.store_information(req.session.no);
 
         var q = `SELECT * FROM pos_paid_cart WHERE cart_no = ?`;
         var qVal = [cartno];
@@ -51,7 +54,8 @@ router.get('/cart-receipt?',(req,res)=>{
             res.render('pages/pos/receipt',{
                 tilte : 'Cart Receipt',
                 cartlist : cart_arr,
-                cartpaid : rs 
+                cartpaid : rs,
+                storeinfo : storeinfo
             });
             res.end();
         });
@@ -62,62 +66,114 @@ router.get('/cart-receipt?',(req,res)=>{
 });
 
 
+//============================================To Kitchen======================================//
+router.post('/to-kitchen',(req,res)=>{
+    if(!req.session.no){
+        res.redirect('/auth/login');
+        res.end();
+    }
+
+    var cno = req.session.no;
+    var cartno = req.body.cartno;
+    
+    var q = `SELECT * FROM kitchen WHERE client_no = ? AND  cart_no = ?`;
+    var qVal = [cno,cartno];
+    
+    con.query(q,qVal,(err,rs)=>{
+        if(err) throw err;
+        if(rs.length != 0){
+            res.json({
+                message : 'existed'
+            });
+            res.end();
+        }
+        if(rs.length == 0){
+            var s = `INSERT INTO kitchen(client_no, cart_no) VALUES ?`;
+            var sVal = [
+                [cno,cartno]
+            ];
+            con.query(s,[sVal],(err,rs)=>{
+                if(err) throw err;
+                res.json({
+                    message : 'added', 
+                })
+            });
+        }
+    });
+
+});
+
 
 //============================================= Save Paid Cart================================================
 router.post('/paid-cart',(req,res,next)=>{
-    var cno = req.session.cno;
+    if(!req.session.no){
+        res.redirect('/auth/login');
+        res.end();
+    }
+
+    var cno = req.session.no;
     var cartno = req.body.cartno;
     var subtotal = req.body.subtotal;
     var discount = req.body.discount;
     var payable = req.body.payable;
     var money = req.body.money;
     var change  = req.body.change;
+    var products = JSON.parse(req.body.pr_qty);
     
-    var c = `SELECT * FROM pos_paid_cart WHERE cart_no = ? AND client_no = ?`;
-    var cVal = [cartno,cno];
-    con.query(c,cVal,(err,rs)=>{
-        if(err) throw err;
-        if(rs.length != 0){
-            var u = `UPDATE SET subtotal = ?, discount = ?, netpayable = ?, money = ?
-            change_money = ? WHERE cart_no = ? AND client_no = ?`;
-            var uVal = [subtotal, discount, payable, money, change, cartno,cno];
-            con.query(u,uVal,(err2,rs2)=>{
-                if(err2) throw err2;
-                res.json({
-                    message : 'update'
-                });
-                res.end();
-            });
-        }
-        if(rs.length == 0){
-            var s = `INSERT INTO pos_paid_cart(client_no, cart_no, subtotal, discount, netpayable, 
-                money, change_money) VALUES ?`;
-            var sVal = [
-                [cno, cartno, subtotal, discount, payable, money, change]
-            ];
-            con.query(s,[sVal], (err1,rs1)=>{
-                if(err1) throw err1
-                res.json({
-                    message : 'added'
-                });
-                res.end();
-            });
-        }
-    }); 
+    //Update Product Quantity ==========
+    
+    for(var i=0; i < products.length; i++){
+        master.update_product_qty(products[i].product_no,products[i].quantity).then(e=>{
+            console.log(e);
+        });
+    }
 
+    setTimeout(()=>{
+        var c = `SELECT * FROM pos_paid_cart WHERE cart_no = ? AND client_no = ?`;
+        var cVal = [cartno,cno];
+        con.query(c,cVal,(err,rs)=>{
+            if(err) throw err;
+            if(rs.length != 0){
+                var u = `UPDATE SET subtotal = ?, discount = ?, netpayable = ?, money = ?
+                change_money = ? WHERE cart_no = ? AND client_no = ?`;
+                var uVal = [subtotal, discount, payable, money, change, cartno,cno];
+                con.query(u,uVal,(err2,rs2)=>{
+                    if(err2) throw err2;
+                    res.json({
+                        message : 'update'
+                    });
+                    res.end();
+                });
+            }
+            if(rs.length == 0){
+                var s = `INSERT INTO pos_paid_cart(client_no, cart_no, subtotal, discount, netpayable, 
+                    money, change_money) VALUES ?`;
+                var sVal = [
+                    [cno, cartno, subtotal, discount, payable, money, change]
+                ];
+                con.query(s,[sVal], (err1,rs1)=>{
+                    if(err1) throw err1
+                    res.json({
+                        message : 'added'
+                    });
+                    res.end();
+                });
+            }
+        }); 
+    });
 });
 
 
 //=========================================Get Cart Items Subtotal=============================================
 router.get('/cart-items-subtotal?',(req,res,next)=>{
-
-    var cno = rerq.session.no;
+    var cno = req.session.no;
     var cartno = req.query.cartno;
     var q = `SELECT SUM(total_price) as total FROM pos_cart WHERE no = ? AND client_no = ?`;
     var qVal = [cartno,cno];
     con.query(q,qVal,(err,rs)=>{
         if(err) throw err;
         res.json(rs);
+        res.end();
     });
 
 });
@@ -126,15 +182,28 @@ router.get('/cart-items-subtotal?',(req,res,next)=>{
 //Update Quantity=================================================
 router.post('/update-quantity',(req,res,next)=>{
     var id = req.body.id;
+    var prno = req.body.prno;
     var quantity = req.body.quantity;
     var total_price = req.body.total_price;
-    var q = `UPDATE pos_cart SET quantity = ?, total_price = ? WHERE id = ?`;
-    var qVal = [quantity,total_price,id];
-    con.query(q,qVal,(err,rs)=>{
-        if(err) throw err;
-        res.json({
-            message : 'updated'
-        })
+
+    var s = `SELECT * FROM products WHERE no = ?`;
+    var sVal = [prno];
+    con.query(s,sVal,(err1,rs1)=>{
+        if(err1) throw err1;
+        if(Number(rs1[0].quantity) < Number(quantity)){
+            res.json({
+                message : 'zero'
+            });
+        }else{
+            var q = `UPDATE pos_cart SET quantity = ?, total_price = ? WHERE id = ?`;
+            var qVal = [quantity,total_price,id];
+            con.query(q,qVal,(err,rs)=>{
+                if(err) throw err;
+                res.json({
+                    message : 'updated'
+                });
+            });
+        }
     });
 }); 
 
@@ -171,7 +240,7 @@ router.post('/delete-item',(req,res,next)=>{
 router.get('/cart-items?',(req,res,next)=>{
     var cno = req.session.no;
     var cartno = req.query.cartno;
-    var q = `SELECT a.id, a.price, a.quantity, a.total_price, b.name FROM pos_cart a
+    var q = `SELECT a.id, a.product_no, a.price, a.quantity, a.total_price, b.name FROM pos_cart a
         LEFT JOIN products b on a.product_no = b.no
         WHERE a.no = ? AND a.client_no = ?`;
     var qVal = [cartno,cno];
@@ -207,21 +276,31 @@ router.post('/add-item-to-cart',(req,res,next)=>{
                         message : 'notexist'
                     });
                 }else{
-                    var price = rs1[0].price;
-                    var quantity = 1;
-                    var totalprice = Number(price) * Number(quantity);
-                    
-                    //INSERT IT CART
-                    var s = `INSERT INTO pos_cart(client_no, no, product_no, price, quantity, total_price) VALUES ?`;
-                    var sVal = [
-                        [cno,cartno,productno,price,quantity,totalprice]
-                    ];
-                    con.query(s,[sVal],(err2,rs2)=>{
-                        if(err2) throw err2;
+                    if(rs1[0].quantity == "0"){
                         res.json({
-                            message : 'added'
-                        })
-                    });
+                            message : 'zero'
+                        });
+                    }else if(rs1[0].status == "notavailable"){
+                        res.json({
+                            message : 'notavail'
+                        });
+                    }else{
+                        var price = rs1[0].price;
+                        var quantity = 1;
+                        var totalprice = Number(price) * Number(quantity);
+                        
+                        //INSERT IT CART
+                        var s = `INSERT INTO pos_cart(client_no, no, product_no, price, quantity, total_price) VALUES ?`;
+                        var sVal = [
+                            [cno,cartno,productno,price,quantity,totalprice]
+                        ];
+                        con.query(s,[sVal],(err2,rs2)=>{
+                            if(err2) throw err2;
+                            res.json({
+                                message : 'added'
+                            })
+                        });
+                    }
                 }
             });
         }

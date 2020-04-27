@@ -1,0 +1,131 @@
+extends ../../kitchen-layout
+
+block content 
+
+    .d-flex.align-items-start.flex-column.flex-md-row
+
+        .order-2.order-md-1
+            // Scrollspy
+            .card
+                .card-header.header-elements-inline
+                    h5#scrollspy.card-title ScrollSpy component
+                    .header-elements
+                        .list-icons
+                            a.list-icons-item(data-action='collapse')
+                            a.list-icons-item(data-action='reload')
+                            a.list-icons-item(data-action='remove')
+                .card-body
+                    .mb-4
+                        p
+                            | Scrollspy is a component that automatically updates Bootstrap navigation or list group components based on scroll position to indicate which link is currently active in the viewport. Scrollspy has a few requirements to function properly:
+                        ul.list.mb-4
+                            li It must be used on a Bootstrap nav component or list group.
+                            li
+                                | Scrollspy requires 
+                                code position: relative;
+                                |  on the element you’re spying on, usually the 
+                                code <body>
+                                | .
+                            li
+                                | When spying on elements other than the 
+                                code <body>
+                                | , be sure to have a 
+                                code height
+                                |  set and 
+                                code overflow-y: scroll;
+                                |  applied.
+                            li
+                                | Anchors (
+                                code <a>
+                                | ) are required and must point to an element with that 
+                                code id
+                                | .
+                        h6#scrollspy-data-attributes.font-weight-semibold Usage via Data Attributes
+                        p.mb-3
+                            | To easily add scrollspy behavior to your topbar navigation, add 
+                            code data-spy="scroll"
+                            |  to the element you want to spy on (most typically this would be the 
+                            code <body>
+                            | ). Then add the 
+                            code data-target
+                            |  attribute with the ID or class of the parent element of any Bootstrap 
+                            code .nav
+                            |  component.
+                        p Add CSS styles:
+                        pre.mb-3.language-css.code-toolbar.
+                        p And add markup:
+                        pre.language-markup.code-toolbar.
+                    .mb-4
+                        h6#scrollspy-js.font-weight-semibold Usage via JavaScript
+                        p
+                            | After adding 
+                            code position: relative;
+                            |  in your CSS, call the scrollspy via JavaScript:
+                        pre.mb-3.language-javascript.code-toolbar.
+                    .mb-4
+                        h6#scrollspy-methods.font-weight-semibold Scrollspy Methods
+                        p
+                            | Scrollspy supports 2 methods: 
+                            code refresh
+                            |  - when using scrollspy in conjunction with adding or removing of elements from the DOM, you'll need to call the refresh method; 
+                            code dispose
+                            |  - destroys an element’s scrollspy.
+                        pre.mb-3.language-javascript.code-toolbar.
+                    .mb-4
+                        h6#scrollspy-options.font-weight-semibold Scrollspy Options
+                        p
+                            | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to 
+                            code data-
+                            | , as in 
+                            code data-offset=""
+                            | .
+                        .table-responsive
+                            table.table.table-bordered
+                                thead
+                                    tr
+                                        th Name
+                                        th Type
+                                        th Default
+                                        th Description
+                                tbody
+                                    tr
+                                        td offset
+                                        td number
+                                        td 10
+                                        td Pixels to offset from top when calculating position of scroll.
+                    .mb-3
+                        h6#scrollspy-events.font-weight-semibold Scrollspy Events
+                        .table-responsive.mb-3
+                            table.table.table-bordered
+                                thead
+                                    tr
+                                        th Event Type
+                                        th Description
+                                tbody
+                                    tr
+                                        td
+                                            code activate.bs.scrollspy
+                                        td This event fires whenever a new item becomes activated by the scrollspy.
+                        p Example code:
+                        pre.mb-3.language-javascript.code-toolbar.
+            // /scrollspy
+            
+
+        .sidebar-sticky.w-100.w-md-auto.order-1.order-md-2
+            .sidebar.sidebar-light.sidebar-component.sidebar-component-right.sidebar-expand-md(style='')
+                .sidebar-content
+                    // Navigation
+                    .card
+                        .card-header.bg-transparent.header-elements-inline
+                            span.text-uppercase.font-size-sm.font-weight-semibold ORDERS
+                            .header-elements
+                                .list-icons
+                                    a.list-icons-item(data-action='collapse')
+                        ul.nav.nav-sidebar.nav-scrollspy
+                            li.nav-item
+                                a.nav-link(href='#scrollspy') Overview 
+                            
+
+
+block page-script
+    script(src="/global_assets/js/demo_pages/components_scrollspy.js")

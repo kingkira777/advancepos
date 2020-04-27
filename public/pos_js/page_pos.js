@@ -1,8 +1,9 @@
 'user strict';
 let POS = function(){
     var cart_no;
-    var  sub_total, discount, payable, money, change;
-    
+    var sub_total, discount, payable, money, change;
+    var product_qty = [];
+
     //Get DOM input value
     sub_total = $('#subtotal');
     discount = $('#discount');
@@ -25,15 +26,15 @@ let POS = function(){
         var total;
         discount.on('change',function(){
             if(Number(sub_total.val()) <= 0){
-                alert('Subtotal is Zero pls add new item or quantity');
+                master._message_box('Subtotal is Zero pls add new item or quantity','warning');
                 $(this).val(0);
                 payable.val(0);
             }else{
                 if(Number(discount.val()) < 0){
-                    alert('Discount has a negative value');
+                    master._message_box('Discount has a negative value','warning');
                     $(this).val(0);
                 }else if(Number(discount.val()) > 100){
-                    alert('Discount is over 100%');
+                    master._message_box('Discount is over 100%','warning');
                     $(this).val(0);
                 }else{
                     total = (Number(discount.val()) / 100) * Number(sub_total.val());
@@ -46,7 +47,7 @@ let POS = function(){
 
         money.on('change',function(){
             if(Number(money.val()) < Number(payable.val())){
-                alert('Not Enougth Money');
+                master._message_box('Not Enougth Money','warning');
                 $(this).val(0);
                 change.val(0);
             }else{
@@ -67,7 +68,6 @@ let POS = function(){
     let _cart_items_subtotal = function(){
         axios.get('/pos/cart-items-subtotal?cartno='+cart_no)
         .then(function(e){
-            console.log(e.data);
             var total = (e.data[0].total == null)? 0 : e.data[0].total;
             sub_total.val(total);
         });
@@ -78,47 +78,52 @@ let POS = function(){
         let quantity = $(_this);
         let id = quantity.attr('id');
         let price = quantity.attr('data-price');
+        let prno = quantity.attr('data-prno');
         let qty = quantity.val();
         let total_price = Number(price) * Number(qty);
 
         if(Number(qty) <= 0 ){
-            alert('Quantity must be greater zero(0)');
+            master._message_box('Quantity must be greater zero(0)','warning');
             quantity.val(1);
         }else{
             axios.post('/pos/update-quantity',{
                 id : id,
+                prno : prno,
                 quantity :qty,
                 total_price : total_price 
             }).then(function(e){
                 console.log(e.data);
+                if(e.data.message === "zero"){
+                    master._message_box('There is not Enought Stock for this Item', 'warning');
+                    quantity.val(1);
+                }
                 _cart_items();
             });
         }
     };
 
+    // To Kitchen
+    let _to_kitchen = function(){
+        $('#to-kitchen').on('click',function(){
+            axios.post('/pos/to-kitchen',{
+                cartno : cart_no
+            }).then(function(e){
+                console.log(e.data);
+                if(e.data.message === "existed"){
+                    master._message_box('Order is already added to the kitchen','info');
+                }
+                if(e.data.message === "added"){
+                    master._message_box('Successfuly Added to the Kitchen','success');
+                }
+                _paid_cartno();
+            });
+        });
+    };
 
+    // Payment (Paid)
     let _payment_order = function(){
         $('#payment').on('click',function(){
-            if(Number(change.val()) <= 0){
-                alert('Cart Items is Empty');
-            }else{
-                axios.post('/pos/paid-cart',{
-                    cartno : cart_no,
-                    subtotal : sub_total.val(),
-                    discount : discount.val(),
-                    payable : payable.val(),
-                    money : money.val(),
-                    change : change.val()
-                }).then(function(e){
-                    console.log(e.data);
-                    var xvarurl = "/pos/cart-receipt?cartno="+cart_no;
-                    var left = (screen.width - 390) / 2;
-                    var top = (screen.height - 600) / 4;
-                    window.open(xvarurl,'Cart Receipt','width=390,height=600, top='+top+', left='+left);  
-
-                });
-            }
-            
+            _paid_cartno();   
         });
     };  
 
@@ -127,7 +132,7 @@ let POS = function(){
     let _new_order = function(){
         $('#new-order').on('click',function(){
             if(Number(change.val()) <= 0){
-                alert('Payment has not made yet');
+                master._message_box('Payment has not made yet','warning');
             }else{
                 _clear_cart_calculation();
                 _generate_cart_no();
@@ -163,18 +168,21 @@ let POS = function(){
 
     //CART ITEMS
     let _cart_items = function(){
+        product_qty = [];
         axios.get('/pos/cart-items?cartno='+cart_no).then(function(e){
             var items = e.data;
-            console.log(items);
             var htm = ``;
             for(var i=0; i < items.length; i++){
-                console.log(items[i]);
+                var pr_qty = {};
+                pr_qty['product_no'] = items[i].product_no;
+                pr_qty['quantity'] = items[i].quantity;
+                product_qty.push(pr_qty);
                 htm +=`
                     <tr>
                         <td>`+items[i].name+`</td>
                         <td>P`+items[i].price+`</td>
                         <td>
-                            <input onchange="_update_quantity(this);" id="`+items[i].id+`" data-price="`+items[i].price+`" type="number" value="`+items[i].quantity+`" min="0" style="width:50px;" />
+                            <input onchange="_update_quantity(this);" id="`+items[i].id+`" data-price="`+items[i].price+`" data-prno="`+items[i].product_no+`" type="number" value="`+items[i].quantity+`" min="0" style="width:50px;" />
                         </td>
                         <td>P`+items[i].total_price+`</td>
                         <td>
@@ -195,10 +203,41 @@ let POS = function(){
             cartno : cart_no,
             productno : _no
         }).then(function(e){
+            if(e.data.message === "exist"){
+                master._message_box('Item is Already on the Cart','info');
+            }
+            if(e.data.message === "zero"){
+                master._message_box('Item is out of Stock','warning');
+            }
+            if(e.data.message === "notavail"){
+                master._message_box('Item is not Available','warning');
+            }
             _cart_items();
         });
     };
 
+    // Paid the Item
+    let _paid_cartno = function(){
+        if(Number(change.val()) <= 0){
+            master._message_box('Cart Items is Empty','warning');
+        }else{
+            axios.post('/pos/paid-cart',{
+                cartno : cart_no,
+                subtotal : sub_total.val(),
+                discount : discount.val(),
+                payable : payable.val(),
+                money : money.val(),
+                change : change.val(),
+                pr_qty : JSON.stringify(product_qty)
+            }).then(function(e){
+                console.log(e.data);
+                var xvarurl = "/pos/cart-receipt?cartno="+cart_no;
+                var left = (screen.width - 390) / 2;
+                var top = (screen.height - 600) / 4;
+                window.open(xvarurl,'Cart Receipt','width=390,height=600, top='+top+', left='+left);  
+            });
+        }
+    }
 
     //Selec Category From  POS
     let _select_category = function(){
@@ -225,7 +264,8 @@ let POS = function(){
                                         <div class="font-weight-semibold mr-2">
                                         `+products[i].name+`
                                         </div>
-                                        <span class="font-size-sm text-muted">P`+products[i].price+`</span>
+                                        <span class="font-size-sm text-muted">Price: `+products[i].price+`</span> <br />
+                                        <span class="font-size-sm text-muted">Stock: `+products[i].quantity+`</span>
                                     </div>
                                     <div class="list-icons list-icons-extended ml-auto">
                                         <a class="list-icons-item add-item" onclick="_add_item_to_cart('`+products[i].no+`');">
@@ -253,27 +293,11 @@ let POS = function(){
         });
     };
 
-    // NOTIFICATIONS==============================================================================
-
-
-    _notifications_alert = function(){
-
-        $('.sweet_success').on('click',function(){
-            swalInit({
-                title : 'Successfuly Done!',
-                text : 'Operation successfuly done',
-                type : 'success'
-            }); 
-        });
-
-        $('.sweet_warning').on('clcik')
-
-    }
-
 
     return{
         initPOS : function(){
             _new_order();
+            _to_kitchen();
             _payment_order();
             _select_category();
             _generate_cart_no();
