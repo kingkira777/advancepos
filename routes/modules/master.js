@@ -140,16 +140,23 @@ let master = {
 
 
     //Send Mail
-    send_mail : function(_to){
-
+    send_mail : async function(_to){
+        let testAccount = await mailer.createTestAccount();
         let trasnporter = mailer.createTransport({
-            host : 'smtp.gmail.com',
-            port: 587,
-            secure: false, // true for 465, false for other ports
-            auth: {
-              user: 'hsouleater@gmail.com', 
-              pass: 'gaaruto16!' 
-            }
+                host: "smtp.ethereal.email",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    user: testAccount.user, // generated ethereal user
+                    pass: testAccount.pass // generated ethereal password
+                }
+            // host : 'smtp.gmail.com',
+            // port: 587,
+            // secure: false, // true for 465, false for other ports
+            // auth: {
+            //   user: 'hsouleater@gmail.com', 
+            //   pass: 'gaaruto16!' 
+            // }
         });
         let send = trasnporter.sendMail({
             from: '"Advnace POS" <evilgod777@protonmail.com>', // sender address
