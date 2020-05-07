@@ -150,13 +150,6 @@ let master = {
                     user: testAccount.user, // generated ethereal user
                     pass: testAccount.pass // generated ethereal password
                 }
-            // host : 'smtp.gmail.com',
-            // port: 587,
-            // secure: false, // true for 465, false for other ports
-            // auth: {
-            //   user: 'hsouleater@gmail.com', 
-            //   pass: 'gaaruto16!' 
-            // }
         });
         let send = trasnporter.sendMail({
             from: '"Advnace POS" <evilgod777@protonmail.com>', // sender address
